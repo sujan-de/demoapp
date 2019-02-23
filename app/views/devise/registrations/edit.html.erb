@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-header">Edit <%= resource_name.to_s.humanize %></div>
+        <div class="card-body">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
+
+          <div class="form-group">
+            <label for="email" class="cols-sm-2 control-label">Your Email</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="username" class="cols-sm-2 control-label">Username</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                <%= f.text_field :username, class: 'form-control'%>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password" class="cols-sm-2 control-label">Password <i>(leave blank if you don't want to change it)</i></label>
+            <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %><br />
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="current_password" class="cols-sm-2 control-label">Current Password <i>(we need your current password to confirm your changes)</i></label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                <%= f.password_field :current_password, autocomplete: "current-password", class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="form-group "> -->
+          <!--     <button type="button" class="btn btn-primary btn-lg btn-block login-button">Register</button> -->
+          <!-- </div> -->
+          <div class="actions form-group">
+            <%= f.submit "Update", class: "btn btn-primary btn-lg btn-block login-button" %>
+          </div>
+          <% end %>
+          <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
