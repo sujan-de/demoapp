@@ -1,0 +1,13 @@
+<div class="container">
+  <% unless @locations.empty? %>
+    <% @locations.each do |location| %>
+      <%= render 'locations/location', locals: {object: location} %>
+      <% end %>
+  <% else%>
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <p>No one has shared any location with you</p>
+      </div>
+    </div>
+  <% end %>
+</div>

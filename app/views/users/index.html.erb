@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 offset-md-2">
+      <% @users.each do |user| %>
+      <p><%= link_to("#{user.name}", user_shared_location_path(user.username))%></p>
+      <% end %>
+    </div>
+  </div>
+</div>
