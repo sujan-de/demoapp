@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div id="map" class="map">
+        <div id="popup" style="display: none; position: relative"><%= image_tag("marker.jpg", style: "width: 13px; height: 17px; position: absolute; margin-top: -18px; margin-left: 3px")%></div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 20px">
+    <div class="col-md-3 offset-md-2">
+      <button id="share-button" class="">Share Publically</button>
+    </div>
+    <div class="col-md-3 offset-md-2">
+      <div><button id="share-private-button" class="">Share Privately</button></div>
+      <%= select_tag "users", options_from_collection_for_select(@users, "id", "name"), multiple: true, style: "margin-top: 8px; margin-left: 8px" %>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    var personList =[];
+    var positionSelected = false;
+    var positionData = "";
+    var zoom = "";
+    var vectorSource = new ol.source.Vector({});
+    var vectorLayer = new ol.layer.Vector({
+      source: vectorSource
+    });
+    var map = new ol.Map({
+      target: 'map',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM()
+        }),
+        vectorLayer
+        ],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([37.41, 8.82]),
+          zoom: 4
+        })
+    });
+    map.on('singleclick', function(event){
+      var marker = document.getElementById('popup');
+      marker.style.display = 'inline';
+      marker.style.marginTop = '-10px';
+      marker.style.marginLeft = '-10px';
+      var popup = new ol.Overlay({
+        element: marker
+      });
+      map.addOverlay(popup);
+      popup.setPosition(ol.proj.transform(event.coordinate, 'EPSG:4326', 'EPSG:4326'))
+      positionData = ol.proj.transform(event.coordinate, 'EPSG:4326', 'EPSG:4326');
+      zoom = map.getView().getZoom();
+      positionSelected = true;
+    });
+    $("#share-button").on('click', function(){
+      if(positionSelected == true) {
+        var url = "<%=user_locations_path(@user)%>";
+        $.post(url, { latitude: positionData[0], longitude: positionData[1], zoom: zoom, share: 'public', authenticity_token: document.getElementsByName('csrf-token')[0].content }).done(function(){
+                      alert("successfully shared the location");
+                  }).fail(function(){
+                     alert("the location was not shared")
+                  });
+      } else {
+        alert("Please select a location first");
+      }
+    });
+
+    $('#share-private-button').on('click', function(){
+      var url = "<%=user_locations_path(@user)%>";
+      if(positionSelected == true && personList.length != 0) {
+        $('#users').find(':selected').each(function(){
+          personList.push($(this).val());
+        });
+        $.post(url, { latitude: positionData[0], longitude: positionData[1], zoom: zoom, person_list: personList, share: 'private', authenticity_token: document.getElementsByName('csrf-token')[0].content }).done(function(){
+                    alert("successfully shared the location")
+                 }).fail(function(){
+                    alert("the location was not shared")
+                 });
+      } else if(positionSelected != true) {
+        alert("Please select a location first")
+      } else {
+        alert("Please select the persons you want to share it with")
+      }
+    });
+  });
+</script>

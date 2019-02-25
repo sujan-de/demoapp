@@ -1,0 +1,36 @@
+<div class="row" style="margin-top: 20px">
+  <div class="col-md-8 offset-md-2">
+    <div id='map<%="#{locals[:object].id}"%>' class="map">
+      <div id='popup<%="#{locals[:object].id}"%>' style="position: relative">
+        <%= image_tag("marker.jpg", style: "width: 13px; height: 17px; position: absolute; margin-top: -18px; margin-left: -6px")%>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+     var vectorSource = new ol.source.Vector({
+     });
+     var vectorLayer = new ol.layer.Vector({
+       source: vectorSource
+     });
+     var map<%="#{locals[:object].id}"%> = new ol.Map({
+        target: 'map<%="#{locals[:object].id}"%>',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          }),
+          vectorLayer
+        ],
+        view: new ol.View({
+          center: ol.proj.transform([<%="#{locals[:object].latitude}"%>, <%="#{locals[:object].longitude}"%>], 'EPSG:4326', 'EPSG:4326'),
+          zoom: <%="#{locals[:object].zoom}"%>
+        })
+  });
+  var popup<%="#{locals[:object].id}"%> = new ol.Overlay({
+        element: document.getElementById('popup<%="#{locals[:object].id}"%>')
+  });
+  map<%="#{locals[:object].id}"%>.addOverlay(popup<%="#{locals[:object].id}"%>);
+   popup<%="#{locals[:object].id}"%>.setPosition(ol.proj.transform([<%="#{locals[:object].latitude}"%>, <%="#{locals[:object].longitude}"%>], 'EPSG:4326', 'EPSG:4326'));
+  });
+</script>
