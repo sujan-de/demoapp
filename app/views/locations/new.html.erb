@@ -68,10 +68,12 @@
 
     $('#share-private-button').on('click', function(){
       var url = "<%=user_locations_path(@user)%>";
+      personList = [];
+      $('#users').find(':selected').each(function(){
+        personList.push($(this).val());
+      });
       if(positionSelected == true && personList.length != 0) {
-        $('#users').find(':selected').each(function(){
-          personList.push($(this).val());
-        });
+
         $.post(url, { latitude: positionData[0], longitude: positionData[1], zoom: zoom, person_list: personList, share: 'private', authenticity_token: document.getElementsByName('csrf-token')[0].content }).done(function(){
                     alert("successfully shared the location")
                  }).fail(function(){

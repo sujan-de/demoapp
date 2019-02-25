@@ -1,9 +1,4 @@
 <div class="container">
-  <% @locations.each do |location| %>
-    <%= render 'locations/location', locals: {object: location} %>
-  <% end %>
-</div>
-<div class="container">
   <% unless @locations.empty? %>
     <% @locations.each do |location| %>
       <%= render 'locations/location', locals: {object: location} %>

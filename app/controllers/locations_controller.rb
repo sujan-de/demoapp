@@ -17,11 +17,11 @@ class LocationsController < ApplicationController
     if location.save
       if params[:share] == "private"
         params[:person_list].each { |person_id| location.shared_users << User.find_by(id: person_id.to_i) }
-        flash[:alert] = "This map has been shared with your users"
+        #flash[:alert] = "This map has been shared with your users"
       end
-      flash[:alert] ||= "This map has been shared publically"
+      #flash[:alert] ||= "This map has been shared publically"
     else
-      flash[:alert] = "The location was not shared"
+      #flash[:alert] = "The location was not shared"
     end
   end
 end
